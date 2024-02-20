@@ -7,7 +7,7 @@ const GambleSite = () => {
   const [oddsData, setOddsData] = useState([]);
   const apiKey = "d117bdc20de0d410334b155416a20786";
   const oddsApiUrl = `https://api.the-odds-api.com/v4/sports/${selectedSport}/odds/?apiKey=${apiKey}`;
-
+ 
   const sportsWanted = [
     "American Football",
     "Basketball",
@@ -22,9 +22,7 @@ const GambleSite = () => {
   useEffect(() => {
     const fetchSportsData = async () => {
       try {
-        const response = await fetch(
-          `https://api.the-odds-api.com/v4/sports/?apiKey=${apiKey}`
-        );
+        const response = await fetch(`${oddsApiUrl}/sports/?apiKey=${apiKey}`);
 
         const data = await response.json();
         setSportsData(data);
@@ -32,6 +30,7 @@ const GambleSite = () => {
           sportsWanted.includes(sport.group)
         );
 
+        setSportsData(filteredData);
         setFilteredSportsData(filteredData);
       } catch (error) {
         console.error("Error fetching sports data:", error);
@@ -40,27 +39,6 @@ const GambleSite = () => {
 
     fetchSportsData();
   }, []);
-
-  useEffect(() => {
-    const fetchOddsData = async () => {
-      try {
-        if (selectedSport) {
-          const response = await fetch(oddsApiUrl);
-          const data = await response.json();
-          setOddsData(data);
-        }
-      } catch (error) {
-        console.error("Error fetching odds data:", error);
-      }
-    };
-
-    fetchOddsData();
-  }, [selectedSport, oddsApiUrl]);
-
-  const handleSportChange = (event) => {
-    const selectedSport = event.target.value;
-    setSelectedSport(selectedSport);
-  };
 
   return (
     <div>
@@ -73,22 +51,20 @@ const GambleSite = () => {
           </option>
         ))}
       </select>
-      
-      {oddsData.length > 0 && (
-        <div>
-          <h2>Odds for {selectedSport}</h2>
-          <ul>
-            {oddsData.map((game, index) => (
-              <li key={index}>
-                {/* Render details of each game */}
-                {/* Example: {game.teams} - {game.odds} */}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
+
+  function handleSportChange(event) {
+    const selectedSport = event.target.value;
+    setSelectedSport(selectedSport);
+    console.log("selected sport", selectedSport);
+
+    const gamesWanted = filteredSportsData.filter((sport) =>
+      selectedSport.includes(sport.group)
+    );
+
+    console.log("Selected sport:", gamesWanted);
+  }
 };
 
 export default GambleSite;
