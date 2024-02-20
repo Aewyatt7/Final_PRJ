@@ -1,16 +1,16 @@
-import { useState } from 'react'
-import './App.css'
+import React from 'react';
+import GambleSite from './components/GambleSite';
+import './App.css';
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-   <div>
-    <h1> Final Project</h1>
-   </div>
-    </>
-  )
+    <div className="App">
+      <GambleSite />
+      
+    </div>
+  );
 }
 
-export default App
+export default App;
+
