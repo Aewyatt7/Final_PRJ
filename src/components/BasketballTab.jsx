@@ -22,3 +22,28 @@ const BasketballTab = ({ sportsData }) => {
 
 export default BasketballTab;
 
+
+
+/*oddsData.map((sportOdds, index) => (
+          <p>{sportOdds}</p>
+          
+        
+          <div key={index}>
+            <h3>{sportOdds.sport_title}</h3>
+            {sportOdds.bookmakers.map((bookmaker, bookmakerIndex) => (
+              <div key={bookmakerIndex}>
+                <h4>{bookmaker.title}</h4>
+                {bookmaker.markets.map((market, marketIndex) => (
+                  <div key={marketIndex}>
+                    <h5>{market.key.toUpperCase()}</h5>
+                    {market.outcomes.map((outcome, outcomeIndex) => (
+                      <div key={outcomeIndex}>
+                        <p>{outcome.name}: {outcome.price}</p>
+                      </div>
+                      ))}
+                      </div>
+                      ))}
+                      </div>
+                      ))}
+                      </div>
+                    ))*/
