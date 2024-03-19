@@ -47,3 +47,28 @@ export default BasketballTab;
                       ))}
                       </div>
                     ))*/
+
+
+                    [2].bookmakers[2].markets[0]
+
+                    {
+                      "key": "h2h",
+                      "last_update": "2024-03-12T22:55:34Z",
+                      "outcomes": [
+                          {
+                              "name": "Memphis Grizzlies",
+                              "price": 2.15
+                          },
+                          {
+                              "name": "Washington Wizards",
+                              "price": 1.71
+                          }
+                      ]
+                  }
+
+
+    //Bundles all your promises and consumes all of them
+    Promise.all(fetchPromises)
+    .then((responsesArray) => {
+        return Promise.all (responsesArray.map((response) => response.json()));
+        
