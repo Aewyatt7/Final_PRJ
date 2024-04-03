@@ -14,7 +14,7 @@ const GambleSite = () => {
   const [gamesWanted, setGamesWanted] = useState([]);
   const [oddsData, setOddsData] = useState([]);
 
-  const apiKey = "18100a7eb1ac101521815a7ed8f9ce3c";
+  const apiKey = "ecf41f0349264c6708c3ada4937cb611";
   const oddsApiUrl = "https://api.the-odds-api.com/v4";
   const sportsWanted = [
     //"American Football",
@@ -60,7 +60,7 @@ const GambleSite = () => {
     const fetchPromises = gamesWanted.map((sportLeague) => {
       //You can list multiple markets as a API parameter later when you want to change this
       return fetch(
-        `${oddsApiUrl}/sports/${sportLeague.key}/odds?apiKey=${apiKey}&regions=us&markets=h2h,spreads,totals`
+        `${oddsApiUrl}/sports/${sportLeague.key}/odds?apiKey=${apiKey}&regions=us&markets=h2h,spreads,totals&oddsFormat=american`
       );
     });
 
@@ -118,78 +118,46 @@ const GambleSite = () => {
           <tbody>
             {oddsData.length > 0 &&
               oddsData[0].map((obj, idx) => {
+                console.log("OddsData", oddsData);
                 return (
-                  <table border="1">
-                    <tr align='center'>
-                      <td>{obj.away_team} @ {obj.home_team}</td>
-                    </tr>
-                    {obj.bookmakers.map((bookmaker) => {
-                      return (
-                        <tr align='center'>
-                          <td>{bookmaker.title}</td>
-                          {bookmaker.markets.map((market) => {
-                            return <td>{market.key}</td>;
-                          })}
-                        </tr>
-                      );
-                    })}
-                  </table>
+                  <>
+                    <p>&nbsp;{/*Break between tables*/}</p>
+
+                    <table border="1" width="400">
+                      <tr align="center">
+                        <td colSpan="4">
+                          {obj.away_team} @ {obj.home_team}
+                        </td>
+                      </tr>
+                      {obj.bookmakers
+                        .filter((book) => sportsbooks.includes(book.title))
+                        .map((bookmaker) => {
+                          console.log("bookmaker", bookmaker);
+
+                          return (
+                            <tr align="center">
+                              <td>{bookmaker.title}</td>
+                              {bookmaker.markets.map((market) => {
+                                return market.outcomes.map(
+                                  ({ name, price, point }) => {
+                                    return (
+                                      <td>
+                                        {point}
+                                        <br></br>
+                                        {price} <br></br>
+                                        {name}
+                                      </td>
+                                    );
+                                  }
+                                );
+                              })}
+                            </tr>
+                          );
+                        })}
+                    </table>
+                  </>
                 );
               })}
-            {/*
-              obj.markets.map((market, marketIdx) => {
-                if (market.key == "h2h") {
-                  return <div>h2h</div>;
-                }
-                if (market.key == "spreads") {
-                  return <div>spreads</div>;
-                }
-                if (market.key == "totals") {
-                  return <div>totals</div>;
-                }
-
-                return (
-                  <tr key={`${idx}-${marketIdx}-${outcomeIdx}`}>
-                    <td>{outcome.name}</td>
-                   
-                    <td>
-                      <table>
-                        <tr>
-                          <th></th> 
-                          <th>FanDuel</th>
-                          <th>MGM</th>
-                          <th>Draft Kings</th>
-                        </tr>
-                        <tr>
-                          {" "}
-                         
-                          <th>ML:</th>
-                          <td>DATA</td>
-                          <td>{outcome.point}</td>
-                          <td>DATA</td>
-                        </tr>
-                        <tr>
-                          {" "}
-                          
-                          <th>Spread:</th>
-                          <td>{outcome.price}</td>
-                          <td>DATA</td>
-                          <td>DATA</td>
-                        </tr>
-                        <tr>
-                          {" "}
-                          
-                          <th>Total:</th>
-                          <td>DATA</td>
-                          <td>DATA</td>
-                          <td>DATA</td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                );
-              })
-            )}*/}
           </tbody>
         </table>
       </div>
@@ -219,3 +187,6 @@ export default GambleSite;
 //stockdash
 // merge the data... after making the data
 // How to sort an array in javascript
+
+
+//TO DO
