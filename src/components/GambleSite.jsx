@@ -14,7 +14,7 @@ const GambleSite = () => {
   const [gamesWanted, setGamesWanted] = useState([]);
   const [oddsData, setOddsData] = useState([]);
 
-  const apiKey = "ecf41f0349264c6708c3ada4937cb611";
+  const apiKey = "0bca924da199dd49f8995a73c8ee422d";
   const oddsApiUrl = "https://api.the-odds-api.com/v4";
   const sportsWanted = [
     //"American Football",
@@ -119,35 +119,49 @@ const GambleSite = () => {
             {oddsData.length > 0 &&
               oddsData[0].map((obj, idx) => {
                 console.log("OddsData", oddsData);
+
                 return (
                   <>
                     <p>&nbsp;{/*Break between tables*/}</p>
 
                     <table border="1" width="400">
                       <tr align="center">
-                        <td colSpan="4">
+                        <th colSpan="7">
                           {obj.away_team} @ {obj.home_team}
-                        </td>
+                        </th>
+                      </tr>
+                      <tr align="center">
+                        <th>Sportsbook</th>
+                        <th colSpan="2">Moneyline</th>
+                        <th colSpan="2">Spread</th>
+                        <th colSpan="2">Total</th>
                       </tr>
                       {obj.bookmakers
                         .filter((book) => sportsbooks.includes(book.title))
                         .map((bookmaker) => {
                           console.log("bookmaker", bookmaker);
-
                           return (
                             <tr align="center">
-                              <td>{bookmaker.title}</td>
+                              <th> {bookmaker.title}</th>
                               {bookmaker.markets.map((market) => {
                                 return market.outcomes.map(
                                   ({ name, price, point }) => {
-                                    return (
-                                      <td>
-                                        {point}
-                                        <br></br>
-                                        {price} <br></br>
-                                        {name}
-                                      </td>
-                                    );
+                                    let sbTemp = "";
+
+                                    if (name === "Over") {
+                                      sbTemp = "O ";
+                                    } else if (name === "Under") {
+                                      sbTemp = "U ";
+                                    }
+
+                                    if (point !== "") {
+                                      sbTemp += `${point}`;
+                                    }
+
+                                    sbTemp += price;
+
+                                    return  <td>{sbTemp}</td>
+                                 
                                   }
                                 );
                               })}
@@ -187,6 +201,5 @@ export default GambleSite;
 //stockdash
 // merge the data... after making the data
 // How to sort an array in javascript
-
 
 //TO DO
